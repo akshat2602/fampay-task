@@ -46,6 +46,7 @@ services:
       - server
 
   celery-beat:
+    container_name: celery-beat
     restart: always
     build:
       context: ./server
@@ -58,6 +59,7 @@ services:
       - db
       - redis
       - server
+      - celery
 
 volumes:
   run_vol:
