@@ -20,6 +20,7 @@ This project is a simple backend application that is supposed to fetch YouTube v
 -   Containerized using Docker and managed using docker-compose.
 -   PEP-8 Coding guidelines followed.
 -   Used Celery and Celery-beat for doing async API calls and scheduling tasks.
+-   The project has been divided into two docker-compose files, one for development use and the other for production use.
 
 API endpoints have been developed to further display the data to the user:
 
