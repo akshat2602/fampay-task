@@ -45,10 +45,11 @@ INSTALLED_APPS = [
     "whitenoise.runserver_nostatic",
     "corsheaders",
     "rest_framework",
-    "django_celery_results",
     "django_celery_beat",
+    "django_celery_results",
     "djoser",
     "drf_yasg",
+    "youtubeAPI",
 ]
 
 MIDDLEWARE = [
@@ -158,14 +159,23 @@ REST_FRAMEWORK = {
 
 SWAGGER_SETTINGS = {
     "SECURITY_DEFINITIONS": {
-        "Bearer": {"type": "apiKey", "name": "Authorization", "in": "header"}
+        "Bearer": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
     }
 }
 
 
 CELERY_BROKER_URL = "redis://redis:6379"
 CELERY_RESULT_BACKEND = "redis://redis:6379"
-
+CELERY_BEAT_SCHEDULE = {
+    "youtube_get_video_data": {
+        "task": "youtubeAPI.tasks.youtube_get_video_data",
+        "schedule": timedelta(seconds=10),
+    },
+}
 
 # Admin Panel Settings
 JAZZMIN_SETTINGS = {
