@@ -12,3 +12,18 @@ class GetYoutubeData(generics.ListAPIView):
     queryset = Video.objects.all()
     filter_backends = [filters.OrderingFilter]
     ordering_fields = ["published_at"]
+
+
+class VideoFilterSet(django_filters.FilterSet):
+    class Meta:
+        model = Video
+        fields = {
+            'title': ['contains'],
+            'description': ['contains'],
+        }
+
+class FilterYoutubeData(generics.ListAPIView):
+    queryset = Video.objects.all()
+    serializer_class = VideoSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = VideoFilterSet
