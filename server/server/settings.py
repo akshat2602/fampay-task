@@ -164,12 +164,12 @@ REST_FRAMEWORK = {
 }
 
 # Celery Settings
-CELERY_BROKER_URL = "redis://redis:6379"
-CELERY_RESULT_BACKEND = "redis://redis:6379"
+CELERY_BROKER_URL = "redis://redis:6379/0"
+CELERY_RESULT_BACKEND = "redis://redis:6379/0"
 CELERY_BEAT_SCHEDULE = {
     "youtube_get_video_data": {
         "task": "youtubeAPI.tasks.youtube_get_video_data",
-        "schedule": timedelta(seconds=10),
+        "schedule": timedelta(minutes=1),
     },
 }
 
