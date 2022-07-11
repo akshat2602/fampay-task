@@ -47,7 +47,6 @@ INSTALLED_APPS = [
     "rest_framework",
     "django_celery_beat",
     "django_celery_results",
-    "djoser",
     "drf_yasg",
     "youtubeAPI",
 ]
@@ -146,16 +145,6 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-SIMPLE_JWT = {
-    "AUTH_HEADER_TYPES": ("Token",),
-}
-
-# Rest Framework Settings
-REST_FRAMEWORK = {
-    "DEFAULT_AUTHENTICATION_CLASSES": (
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
-    ),
-}
 
 SWAGGER_SETTINGS = {
     "SECURITY_DEFINITIONS": {
