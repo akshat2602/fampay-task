@@ -23,9 +23,9 @@ from drf_yasg import openapi
 
 schema_view = get_schema_view(
    openapi.Info(
-      title="Server API",
+      title="Fampay Task API",
       default_version='v1',
-      description="API Explorer for Server",
+      description="API Explorer for Fampay Task",
       terms_of_service="https://www.google.com/policies/terms/",
       contact=openapi.Contact(email="google@google.com"),
       license=openapi.License(name="BSD License"),
@@ -43,7 +43,8 @@ urlpatterns = [
 urlpatterns += [
     # Admin endpoint
     path('admin/', admin.site.urls),
+    path('', include('youtubeAPI.urls')),
     # Auth endpoints
-    url(r'^auth/', include('djoser.urls')),
-    url(r'^auth/', include('djoser.urls.jwt')),
+    # url(r'^auth/', include('djoser.urls')),
+    # url(r'^auth/', include('djoser.urls.jwt')),
 ]

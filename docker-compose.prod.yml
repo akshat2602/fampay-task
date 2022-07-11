@@ -31,6 +31,39 @@ services:
     env_file:
       - .env.dev
 
+  redis:
+    container_name: redis
+    image: redis:alpine
+
+  celery:
+    container_name: celery
+    restart: always
+    build:
+      context: ./server
+    command: celery -A server worker -l info
+    volumes:
+      - ./server:/server
+    env_file:
+      - .env.dev
+    depends_on:
+      - db
+      - redis
+      - server
+
+  celery-beat:
+    restart: always
+    build:
+      context: .
+    command: celery -A core server -l INFO --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    volumes:
+      - ./core:/core
+    env_file:
+      - .env.dev
+    depends_on:
+      - db
+      - redis
+      - server
+
 volumes:
   run_vol:
     driver_opts:
