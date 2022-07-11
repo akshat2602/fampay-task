@@ -10,9 +10,18 @@ class Video(models.Model):
     published_at = models.DateTimeField(null=True, blank=True)
     video_thumbnail = models.URLField(null=True, blank=True)
 
+    class Meta:
+        indexes = [
+            models.Index(fields=['-published_at']),
+        ]
+
 
 class API_Key(models.Model):
     name = models.CharField(max_length=50)
     creation_date = models.DateField()
     key = models.CharField(max_length=200)
     quota_exceeded = models.BooleanField(default=False)
+
+    class Meta:
+        verbose_name = "API Key"
+        verbose_name_plural = "API Keys"

@@ -15,12 +15,11 @@ class GetYoutubeData(generics.ListAPIView):
 
 
 class VideoFilterSet(django_filters.FilterSet):
+    title= django_filters.CharFilter(lookup_expr='icontains')
+    description= django_filters.CharFilter(lookup_expr='icontains')
     class Meta:
         model = Video
-        fields = {
-            'title': ['contains'],
-            'description': ['contains'],
-        }
+        fields = ['title', 'description',]
 
 class FilterYoutubeData(generics.ListAPIView):
     queryset = Video.objects.all()
