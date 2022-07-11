@@ -19,6 +19,21 @@ def create_video_data(video_list):
         )
 
 
+def get_video_list(valid_api_key):
+    return requests.get(
+        url=request_url,
+        params={
+            'part': 'snippet',
+            'maxResults': 50,
+            'q': 'football',
+            'type': 'video',
+            'publishedAfter': '2022-07-07T00:00:00Z',
+            'order': 'date',
+            'key': valid_api_key.key
+        }
+    )
+
+
 @shared_task()
 def youtube_get_video_data():
 
@@ -26,15 +41,7 @@ def youtube_get_video_data():
         valid_api_key = API_Key.objects.filter(quota_exceeded=False).first()
 
         if valid_api_key != None:
-            video_list = requests.get(url=request_url, params={
-                'part': 'snippet',
-                'maxResults': 50,
-                'q': 'football',
-                'type': 'video',
-                'publishedAfter': '2022-07-07T00:00:00Z',
-                'order': 'date',
-                'key': valid_api_key.key
-            })
+            video_list = get_video_list(valid_api_key)
 
             if video_list.status_code == 200:
                 create_video_data(video_list)
