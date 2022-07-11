@@ -1,11 +1,14 @@
-from drf_yasg.utils import swagger_auto_schema
-from django.conf import settings
-from rest_framework import status
-from rest_framework.response import Response
-from rest_framework.views import APIView
+import django_filters
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import generics, filters
 
 
-class GetYoutubeData(APIView):
+from .models import Video
+from .serializers import VideoSerializer
 
-    def get(self, request, *args, **kwargs):
-        return Response(status=status.HTTP_200_OK)
+
+class GetYoutubeData(generics.ListAPIView):
+    serializer_class = VideoSerializer
+    queryset = Video.objects.all()
+    filter_backends = [filters.OrderingFilter]
+    ordering_fields = ["published_at"]
