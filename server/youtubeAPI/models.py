@@ -14,6 +14,7 @@ class Video(models.Model):
         indexes = [
             models.Index(fields=['-published_at']),
         ]
+        ordering = ['-published_at',]
 
 
 class API_Key(models.Model):
