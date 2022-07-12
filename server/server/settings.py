@@ -170,6 +170,10 @@ CELERY_BEAT_SCHEDULE = {
         "task": "youtubeAPI.tasks.youtube_get_video_data",
         "schedule": timedelta(minutes=1),
     },
+    "revive_exhausted_api_keys": {
+        "task": "youtubeAPI.tasks.revive_exhausted_api_keys",
+        "schedule": timedelta(minutes=1),
+    }
 }
 
 # Admin Panel Settings

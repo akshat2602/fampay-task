@@ -1,3 +1,4 @@
+from datetime import timedelta, datetime
 from celery import shared_task
 from .models import API_Key, Video
 import requests
@@ -7,7 +8,7 @@ request_url = "https://youtube.googleapis.com/youtube/v3/search"
 
 
 def create_video_data(video_list):
-
+    """For each video in the video_list, create a Video object"""
     for i in range(len(video_list.json()["items"])):
         videos = video_list.json()["items"]
         Video.objects.get_or_create(
@@ -20,6 +21,7 @@ def create_video_data(video_list):
 
 
 def get_video_list(valid_api_key):
+    """Get the video list from the YouTube API"""
     return requests.get(
         url=request_url,
         params={
@@ -36,7 +38,7 @@ def get_video_list(valid_api_key):
 
 @shared_task()
 def youtube_get_video_data():
-
+    """Function to get video data from YouTube API"""
     while True:
         valid_api_key = API_Key.objects.filter(quota_exceeded=False).first()
 
@@ -49,6 +51,7 @@ def youtube_get_video_data():
 
             elif video_list.status_code == 403:
                 valid_api_key.quota_exceeded = True
+                valid_api_key.exhausted_at = datetime.now()
                 valid_api_key.save()
                 print("Quota exceeded for this API key!")
 
@@ -58,3 +61,16 @@ def youtube_get_video_data():
         else:
             print("All API Keys have exhausted! Please add new API Keys")
             break
+
+
+@shared_task()
+def revive_exhausted_api_keys():
+    """Function to revive exhausted API keys"""
+    keys = API_Key.objects.filter(quota_exceeded=True)
+    for key in keys:
+        if key.exhausted_at < datetime.now() - timedelta(days=1):
+            key.quota_exceeded = False
+            key.save()
+            print("API Key revived!")
+        else:
+            print("API Key still exhausted!")
