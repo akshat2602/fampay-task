@@ -1,5 +1,7 @@
 from datetime import timedelta, datetime
 from celery import shared_task
+import pytz
+
 from .models import API_Key, Video
 import requests
 
@@ -55,6 +57,13 @@ def youtube_get_video_data():
                 valid_api_key.save()
                 print("Quota exceeded for this API key!")
 
+            elif video_list.json()['error']['code'] == 400:
+                valid_api_key.quota_exceeded = True
+                valid_api_key.exhausted_at = datetime.now()
+                valid_api_key.save()
+                print("Bad request!")
+                break
+
             else:
                 print("Error occured while API call!")
 
@@ -68,7 +77,7 @@ def revive_exhausted_api_keys():
     """Function to revive exhausted API keys"""
     keys = API_Key.objects.filter(quota_exceeded=True)
     for key in keys:
-        if key.exhausted_at < datetime.now() - timedelta(days=1):
+        if key.exhausted_at < datetime.now(pytz.utc) - timedelta(days=1):
             key.quota_exceeded = False
             key.save()
             print("API Key revived!")
