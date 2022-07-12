@@ -22,6 +22,10 @@ This project is a simple backend application that is supposed to fetch YouTube v
 -   Used Celery and Celery-beat for doing async API calls and scheduling tasks.
 -   The project has been divided into two docker-compose files, one for development use and the other for production use.
 
+## System Architecture : 
+![System Architecture](https://raw.githubusercontent.com/akshat2602/fampay-task/master/screenshots/System_Architecture.jpeg)
+
+## API : 
 API endpoints have been developed to further display the data to the user:
 
 ### Endpoint URL - /list/video/
@@ -31,6 +35,13 @@ This endpoint will return a paginated response sorted in descending order of pub
 ### Endpoint URL - /search/video/
 This endpoint will return a paginated response and can be used for searching on the title or the description of the video using query params in the following format.
 `localhost:8000/search/video/?search=ate`
+
+## Screenshot of API response :
+Screenshot of GET API request that returns all the YouTube videos in a paginated response - 
+![Screenshot of GET API response](https://raw.githubusercontent.com/akshat2602/fampay-task/master/screenshots/GET_Response.png)
+
+Screenshot of SEARCH API request that returns all the YouTube videos in a paginated response - 
+![Screenshot of SEARCH API response](https://raw.githubusercontent.com/akshat2602/fampay-task/master/screenshots/SEARCH_Response.png)
 
 
 ## Getting Started
