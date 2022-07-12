@@ -3,6 +3,7 @@ import uuid
 
 # Create your models here.
 class Video(models.Model):
+    """Model for videos"""
     id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     youtube_id = models.CharField(max_length=50, null=False)
     title = models.CharField(max_length=250, null=True, blank=True)
@@ -18,10 +19,12 @@ class Video(models.Model):
 
 
 class API_Key(models.Model):
+    """Model for API keys"""
     name = models.CharField(max_length=50)
     creation_date = models.DateField()
     key = models.CharField(max_length=200)
     quota_exceeded = models.BooleanField(default=False)
+    exhausted_at = models.DateTimeField(null=True, blank=True)
 
     class Meta:
         verbose_name = "API Key"
